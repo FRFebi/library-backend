@@ -11,7 +11,7 @@ type BookHandler struct {
 	BookUsecase domain.BookUsecase
 }
 
-func NewBookhadnler(app *fiber.App, bookUsecase domain.BookUsecase) {
+func NewBookhandler(app fiber.Router, bookUsecase domain.BookUsecase) {
 	handler := &BookHandler{BookUsecase: bookUsecase}
 	app.Get("/books", handler.GetAllBooks)
 	app.Get("/books/:id", handler.GetAllBooks)
