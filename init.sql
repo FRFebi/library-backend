@@ -1,9 +1,9 @@
+\c postgres;
+
 DROP DATABASE IF EXISTS library;
 CREATE DATABASE library;
 
 \c library;
-
-USE library;
 
 CREATE TABLE book (
     id SERIAL PRIMARY KEY,
