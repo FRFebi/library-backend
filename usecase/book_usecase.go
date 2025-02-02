@@ -28,13 +28,8 @@ func (u *BookUsecase) GetBookId(isbn string) (*domain.Book, error) {
 	return book, nil
 }
 
-func (u *BookUsecase) CreateBook(book domain.Book) error {
-	err := u.BookRepository.Create(book)
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (u *BookUsecase) CreateBook(book *domain.Book) (*domain.Book, error) {
+	return u.BookRepository.Create(book)
 }
 
 func (u *BookUsecase) DeleteBook(isbn string) error {

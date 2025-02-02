@@ -45,9 +45,13 @@ func (r *BookRepository) FindByIsbn(isbn string) (*domain.Book, error) {
 	return book, nil
 }
 
-func (r *BookRepository) Create(book domain.Book) error {
+func (r *BookRepository) Create(book *domain.Book) (*domain.Book, error) {
 	query := `INSERT INTO book (title, author, isbn, stock) VALUES($1,$2,$3,$4) RETURNING id`
-	return r.DB.QueryRow(query, book.Title, book.Author, book.Isbn, book.Stock).Scan(&book.Id)
+	err := r.DB.QueryRow(query, book.Title, book.Author, book.Isbn, book.Stock).Scan(&book.Id)
+	if err != nil {
+		return nil, err
+	}
+	return book, nil
 }
 
 func (r *BookRepository) Delete(isbn string) error {

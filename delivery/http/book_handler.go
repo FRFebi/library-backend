@@ -38,17 +38,17 @@ func (h *BookHandler) GetBookId(c *fiber.Ctx) error {
 }
 
 func (h *BookHandler) CreateBook(c *fiber.Ctx) error {
-	book := domain.Book{}
-	if err := c.BodyParser(&book); err != nil {
+	book := &domain.Book{}
+	if err := c.BodyParser(book); err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	err := h.BookUsecase.CreateBook(book)
+	book, err := h.BookUsecase.CreateBook(book)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	return c.Status(fiber.StatusOK).JSON(nil)
+	return c.Status(fiber.StatusOK).JSON(book)
 }
 
 func (h *BookHandler) DeleteBook(c *fiber.Ctx) error {

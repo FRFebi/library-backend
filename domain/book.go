@@ -11,13 +11,13 @@ type Book struct {
 type BookUsecase interface {
 	GetAllBooks() ([]*Book, error)
 	GetBookId(isbn string) (*Book, error)
-	CreateBook(book Book) error
+	CreateBook(book *Book) (*Book, error)
 	DeleteBook(isbn string) error
 }
 
 type BookRepository interface {
 	FindAll() ([]*Book, error)
 	FindByIsbn(isbn string) (*Book, error)
-	Create(book Book) error
+	Create(book *Book) (*Book, error)
 	Delete(isbn string) error
 }
