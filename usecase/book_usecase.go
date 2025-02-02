@@ -19,8 +19,8 @@ func (u *BookUsecase) GetAllBooks() ([]*domain.Book, error) {
 	return books, nil
 }
 
-func (u *BookUsecase) GetBookId(id int) (*domain.Book, error) {
-	book, err := u.BookRepository.FindById(id)
+func (u *BookUsecase) GetBookId(isbn string) (*domain.Book, error) {
+	book, err := u.BookRepository.FindByIsbn(isbn)
 	if err != nil || book == nil {
 		return nil, err
 	}
@@ -37,8 +37,8 @@ func (u *BookUsecase) CreateBook(book domain.Book) error {
 	return nil
 }
 
-func (u *BookUsecase) DeleteBook(id int) error {
-	err := u.BookRepository.Delete(id)
+func (u *BookUsecase) DeleteBook(isbn string) error {
+	err := u.BookRepository.Delete(isbn)
 	if err != nil {
 		return err
 	}

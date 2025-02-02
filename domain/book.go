@@ -10,14 +10,14 @@ type Book struct {
 
 type BookUsecase interface {
 	GetAllBooks() ([]*Book, error)
-	GetBookId(id int) (*Book, error)
+	GetBookId(isbn string) (*Book, error)
 	CreateBook(book Book) error
-	DeleteBook(id int) error
+	DeleteBook(isbn string) error
 }
 
 type BookRepository interface {
 	FindAll() ([]*Book, error)
-	FindById(id int) (*Book, error)
+	FindByIsbn(isbn string) (*Book, error)
 	Create(book Book) error
-	Delete(id int) error
+	Delete(isbn string) error
 }

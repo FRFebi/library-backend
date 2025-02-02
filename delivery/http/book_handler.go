@@ -1,8 +1,6 @@
 package http
 
 import (
-	"strconv"
-
 	"github.com/FRFebi/library-backend/domain"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,9 +12,9 @@ type BookHandler struct {
 func NewBookhandler(app fiber.Router, bookUsecase domain.BookUsecase) {
 	handler := &BookHandler{BookUsecase: bookUsecase}
 	app.Get("/books", handler.GetAllBooks)
-	app.Get("/books/:id", handler.GetAllBooks)
+	app.Get("/books/:isbn", handler.GetBookId)
 	app.Post("/books", handler.CreateBook)
-	app.Delete("/books/:id", handler.DeleteBook)
+	app.Delete("/books/:isbn", handler.DeleteBook)
 }
 
 func (h *BookHandler) GetAllBooks(c *fiber.Ctx) error {
@@ -29,12 +27,9 @@ func (h *BookHandler) GetAllBooks(c *fiber.Ctx) error {
 }
 
 func (h *BookHandler) GetBookId(c *fiber.Ctx) error {
-	bookId, err := strconv.Atoi(c.Params("id"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-	}
+	bookIsbn := c.Params("isbn")
 
-	book, err := h.BookUsecase.GetBookId(bookId)
+	book, err := h.BookUsecase.GetBookId(bookIsbn)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -57,12 +52,9 @@ func (h *BookHandler) CreateBook(c *fiber.Ctx) error {
 }
 
 func (h *BookHandler) DeleteBook(c *fiber.Ctx) error {
-	bookId, err := strconv.Atoi(c.Params("id"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-	}
+	bookIsbn := c.Params("isbn")
 
-	err = h.BookUsecase.DeleteBook(bookId)
+	err := h.BookUsecase.DeleteBook(bookIsbn)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
