@@ -36,6 +36,11 @@ func main() {
 	borrowerUC := usecase.NewBorrowerUsecase(borrowerRepo)
 	http.NewBorrowerHandler(api, borrowerUC)
 
+	//3. Loan
+	loanRepo := repository.NewLoanRepository(db)
+	loanUC := usecase.NewLoanUsecase(loanRepo)
+	http.NewLoanHandler(api, loanUC)
+
 	log.Fatal(app.Listen(":" + port))
 
 }

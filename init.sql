@@ -22,12 +22,12 @@ CREATE TABLE borrower (
 
 CREATE TABLE loan (
     id SERIAL PRIMARY KEY,
-    book_id INT NOT NULL,
+    book_isbn VARCHAR(20) NOT NULL,
     borrower_id INT NOT NULL,
     loan_date DATE NOT NULL,
     due_date DATE NOT NULL,
     return_date DATE,
     status VARCHAR(20) DEFAULT 'NOT_RETURNED',
-    FOREIGN KEY (book_id) REFERENCES book(id),
+    FOREIGN KEY (book_isbn) REFERENCES book(isbn),
     FOREIGN KEY (borrower_id) REFERENCES borrower(id)
 );
