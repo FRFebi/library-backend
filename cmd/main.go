@@ -25,9 +25,16 @@ func main() {
 
 	db := infrastructure.NewPostgreeDB()
 
+	// Dependency Injection
+	//1. Book
 	bookRepo := repository.NewBookRepository(db)
 	bookUC := usecase.NewBookUsecase(bookRepo)
 	http.NewBookhandler(api, bookUC)
+
+	//2. Borrower
+	borrowerRepo := repository.NewBorrowerRepository(db)
+	borrowerUC := usecase.NewBorrowerUsecase(borrowerRepo)
+	http.NewBorrowerHandler(api, borrowerUC)
 
 	log.Fatal(app.Listen(":" + port))
 
