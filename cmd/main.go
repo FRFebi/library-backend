@@ -38,7 +38,7 @@ func main() {
 
 	//3. Loan
 	loanRepo := repository.NewLoanRepository(db)
-	loanUC := usecase.NewLoanUsecase(loanRepo)
+	loanUC := usecase.NewLoanUsecase(loanRepo, bookRepo)
 	http.NewLoanHandler(api, loanUC)
 
 	log.Fatal(app.Listen(":" + port))

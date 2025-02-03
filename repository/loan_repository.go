@@ -55,6 +55,6 @@ func (r *LoanRepository) Create(loan *domain.Loan) (*domain.Loan, error) {
 
 func (r *LoanRepository) Update(loan *domain.Loan) error {
 	query := "UPDATE loan SET return_date = $1, status = $2 WHERE id = $3"
-	_, err := r.DB.Exec(query, loan.ReturnDate, loan.Status, loan.Id)
+	_, err := r.DB.Exec(query, loan.ReturnDate.Time, loan.Status, loan.Id)
 	return err
 }

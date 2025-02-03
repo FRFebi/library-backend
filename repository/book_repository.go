@@ -59,3 +59,9 @@ func (r *BookRepository) Delete(isbn string) error {
 	_, err := r.DB.Exec(query, isbn)
 	return err
 }
+
+func (r *BookRepository) UpdateStock(book *domain.Book) error {
+	query := "UPDATE book SET stock = $1 WHERE isbn = $2"
+	_, err := r.DB.Exec(query, book.Stock, book.Isbn)
+	return err
+}

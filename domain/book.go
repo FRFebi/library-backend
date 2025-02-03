@@ -20,4 +20,5 @@ type BookRepository interface {
 	FindByIsbn(isbn string) (*Book, error)
 	Create(book *Book) (*Book, error)
 	Delete(isbn string) error
+	UpdateStock(book *Book) error
 }
