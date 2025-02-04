@@ -11,37 +11,27 @@ This library management system is designed to assist library administrators in s
 
 ## Additional Assumptions
 
-1. Each book can only be borrowed by one borrower at a time.
+1. Each book can only be borrowed if the stock are still available
 2. The return status of a book is calculated based on the return date and the due date.
 3. The return status of a book will automatically be updated to `ON_TIME` if the book is returned before or on the due date, and `LATE` if returned after the due date.
 4. The return status of a book that has not been returned will remain `NOT_RETURNED`.
 5. Borrower and book data must be valid before a loan is processed.
-6. A borrowed book cannot be borrowed by another borrower until it is returned.
 
 ## How to Run the Application
 
-1. Ensure that the MySQL server is installed and running.
-2. Create a new database named `library_management_system`.
-3. Adjust the database configuration in the `config/config.go` file according to your MySQL setup.
-4. Run the following commands to install dependencies:
-5.
+1. Run docker `docker compose up -d`
+2. Access the API via the endpoint: `http://localhost:3000`
+3. Access the API documentation endpoint: `http://localhost:3000/swagger/index.html`
 
-```bash
- go mod tidy
- go run cmd/main.go
-```
-
-5. Access the API via the endpoint: `http://localhost:8080`
-
-6. **API Endpoints**:
+4. **API Endpoints**:
 
    1. **Book**
       | Method | Endpoint | Description | Body (JSON) |
       | ------ | ---------------- | ------------------------------------ | --------------------------------------------------------------------------- |
       | GET | `/api/books` | Get all books | - |
-      | GET | `/api/books/{id}`| Get a book by ID | - |
-      | POST | `/api/books` | Add a new book | `{ "title": "string", "author": "string", "isbn": "string", "available": true/false }` |
-      | DELETE | `/api/books/{id}`| Delete a book by ID | - |
+      | GET | `/api/books/{isbn}`| Get a book by ISBN | - |
+      | POST | `/api/books` | Add a new book | `{ "title": "string", "author": "string", "isbn": "string", "stock": int }` |
+      | DELETE | `/api/books/{isbn}`| Delete a book by ISBN | - |
 
    2. **Borrower**
       | Method | Endpoint | Description | Body (JSON) |
@@ -56,8 +46,8 @@ This library management system is designed to assist library administrators in s
       | ------ | ------------------ | ------------------------------------ | --------------------------------------------------------------------------- |
       | GET | `/api/loans` | Get all loans | - |
       | GET | `/api/loans/{id}` | Get a loan by ID | - |
-      | POST | `/api/loans/borrow`| Borrow a book | `{ "bookID": int, "borrowerID": int, "loanDate": "YYYY-MM-DD", "dueDate": "YYYY-MM-DD" }` |
-      | POST | `/api/loans/return`| Return a book | `{ "loanID": int, "returnDate": "YYYY-MM-DD" }` |
+      | POST | `/api/loans/borrow`| Borrow a book | `{ "book_isbn": "string", "borrower_id": int }` |
+      | POST | `/api/loans/return`| Return a book | `{ "id": int }` |
 
 ---
 
@@ -84,12 +74,12 @@ This library management system is designed to assist library administrators in s
 
 ### `loan` Table
 
-| Column      | Data Type | Description                                     |
-| ----------- | --------- | ----------------------------------------------- |
-| id          | INT       | Primary Key, Auto Increment                     |
-| book_id     | INT       | Foreign Key, Book ID                            |
-| borrower_id | INT       | Foreign Key, Borrower ID                        |
-| loan_date   | DATE      | Loan date                                       |
-| due_date    | DATE      | Due date                                        |
-| return_date | DATE      | Return date (nullable)                          |
-| status      | ENUM      | Loan status (`ON_TIME`, `LATE`, `NOT_RETURNED`) |
+| Column      | Data Type   | Description                                     |
+| ----------- | ----------- | ----------------------------------------------- |
+| id          | INT         | Primary Key, Auto Increment                     |
+| book_isbn   | VARCHAR(20) | Foreign Key, Book ID                            |
+| borrower_id | INT         | Foreign Key, Borrower ID                        |
+| loan_date   | DATE        | Loan date                                       |
+| due_date    | DATE        | Due date                                        |
+| return_date | DATE        | Return date (nullable)                          |
+| status      | ENUM        | Loan status (`ON_TIME`, `LATE`, `NOT_RETURNED`) |
