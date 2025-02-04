@@ -17,7 +17,7 @@ func NewBookRepository(db *sql.DB) domain.BookRepository {
 func (r *BookRepository) FindAll() ([]*domain.Book, error) {
 	books := []*domain.Book{}
 
-	query := "SELECT id, title, author, isbn, stock FROM book"
+	query := "SELECT id, title, author, isbn, stock FROM book ORDER BY id ASC"
 	rows, err := r.DB.Query(query)
 	if err != nil {
 		return nil, err

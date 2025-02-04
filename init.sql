@@ -31,3 +31,7 @@ CREATE TABLE loan (
     FOREIGN KEY (book_isbn) REFERENCES book(isbn),
     FOREIGN KEY (borrower_id) REFERENCES borrower(id)
 );
+
+INSERT INTO book (title, author, isbn, stock) VALUES ('Test 1', 'Dev 1', '0001', '2');
+INSERT INTO book (title, author, isbn, stock) VALUES ('Test 2', 'Dev 1', '0002', '2');
+INSERT INTO book (title, author, isbn, stock) VALUES ('Test 3', 'Dev 1', '0003', '2');

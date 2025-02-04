@@ -9,7 +9,7 @@ type BookHandler struct {
 	BookUsecase domain.BookUsecase
 }
 
-func NewBookhandler(app fiber.Router, bookUsecase domain.BookUsecase) {
+func NewBookHandler(app fiber.Router, bookUsecase domain.BookUsecase) {
 	handler := &BookHandler{BookUsecase: bookUsecase}
 	app.Get("/books", handler.GetAllBooks)
 	app.Get("/books/:isbn", handler.GetBookId)

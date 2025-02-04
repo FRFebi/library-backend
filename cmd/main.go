@@ -29,7 +29,7 @@ func main() {
 	//1. Book
 	bookRepo := repository.NewBookRepository(db)
 	bookUC := usecase.NewBookUsecase(bookRepo)
-	http.NewBookhandler(api, bookUC)
+	http.NewBookHandler(api, bookUC)
 
 	//2. Borrower
 	borrowerRepo := repository.NewBorrowerRepository(db)
