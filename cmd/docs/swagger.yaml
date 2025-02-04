@@ -1,0 +1,334 @@
+basePath: /
+definitions:
+  domain.Book:
+    properties:
+      author:
+        type: string
+      id:
+        type: integer
+      isbn:
+        type: string
+      stock:
+        type: integer
+      title:
+        type: string
+    type: object
+  domain.Borrower:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  domain.Loan:
+    properties:
+      book_isbn:
+        type: string
+      borrower_id:
+        type: integer
+      due_date:
+        type: string
+      id:
+        type: integer
+      loan_date:
+        type: string
+      return_date:
+        type: string
+      status:
+        type: string
+    type: object
+  http.BorrowBook:
+    properties:
+      book_isbn:
+        type: string
+      borrower_id:
+        type: integer
+    type: object
+  http.CreateBookRequest:
+    properties:
+      author:
+        type: string
+      isbn:
+        type: string
+      stock:
+        type: integer
+      title:
+        type: string
+    type: object
+  http.ReturnBook:
+    properties:
+      id:
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: fiko469@gmail.com
+    name: Fiko Redha
+  description: This is Library Backend API documentation
+  title: Library Backend API Documentation
+  version: "1.0"
+paths:
+  /api/books:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Book'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all books
+      tags:
+      - Books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with the provided details
+      parameters:
+      - description: Create Book Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/http.CreateBookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created book
+          schema:
+            $ref: '#/definitions/domain.Book'
+        "500":
+          description: Internal Server Error
+      summary: Create a new book
+      tags:
+      - Books
+  /api/books/{isbn}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a book from the library using its ISBN
+      parameters:
+      - description: Book ISBN
+        in: path
+        name: isbn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete a book
+      tags:
+      - Books
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a book by its ISBN
+      parameters:
+      - description: Book ISBN
+        in: path
+        name: isbn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Book'
+        "500":
+          description: Internal Server Error
+      summary: Get a book by ISBN
+      tags:
+      - Books
+  /api/borrowers:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all borrowers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Borrower'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all borrowers
+      tags:
+      - Borrowers
+    post:
+      consumes:
+      - application/json
+      description: Create a new borrower in the system
+      parameters:
+      - description: Borrower Registration Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Borrower'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Borrower'
+        "500":
+          description: Internal Server Error
+      summary: Register a new borrower
+      tags:
+      - Borrowers
+  /api/borrowers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a borrower from the system by their ID
+      parameters:
+      - description: Borrower ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete a borrower
+      tags:
+      - Borrowers
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a borrower by their unique ID
+      parameters:
+      - description: Borrower ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Borrower'
+        "500":
+          description: Internal Server Error
+      summary: Get borrower by ID
+      tags:
+      - Borrowers
+  /api/loans:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all loans
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of loans
+          schema:
+            items:
+              $ref: '#/definitions/domain.Loan'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all loans
+      tags:
+      - Loans
+  /api/loans/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a loan by its ID
+      parameters:
+      - description: Loan ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Loan details
+          schema:
+            $ref: '#/definitions/domain.Loan'
+        "500":
+          description: Internal Server Error
+      summary: Get loan by ID
+      tags:
+      - Loans
+  /api/loans/borrow:
+    post:
+      consumes:
+      - application/json
+      description: Borrow a book by providing the loan details
+      parameters:
+      - description: Borrow book request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/http.BorrowBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Loan details
+          schema:
+            $ref: '#/definitions/domain.Loan'
+        "500":
+          description: Internal Server Error
+      summary: Borrow a book
+      tags:
+      - Loans
+  /api/loans/return:
+    post:
+      consumes:
+      - application/json
+      description: Return a borrowed book
+      parameters:
+      - description: Return book request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/http.ReturnBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Return a book
+      tags:
+      - Loans
+swagger: "2.0"

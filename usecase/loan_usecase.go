@@ -58,10 +58,10 @@ func (u *LoanUsecase) ReturnBook(loan *domain.Loan) (*domain.Loan, error) {
 	}
 
 	now := time.Now()
-	loan.ReturnDate.Time = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
-	loan.ReturnDate.Valid = true
+	current := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	loan.ReturnDate = &current
 
-	if loan.ReturnDate.Time.After(loan.DueDate) {
+	if loan.ReturnDate.After(loan.DueDate) {
 		loan.Status = "LATE"
 	} else {
 		loan.Status = "ON_TIME"
